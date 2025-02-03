@@ -1,4 +1,5 @@
 
+
 def objects_to_file( filename: str,  objs: list, *, mode: str = "x") -> None:
     """
 
@@ -33,3 +34,62 @@ def objects_from_file( filename: str, o_class, *, skip_header = True) -> list:
             out.append(o_class(*data_stripped))
 
     return out
+
+from typing import Callable
+from re import fullmatch
+
+def default_error():
+    print("Wrong input, try again!")
+
+def get_int(in_message: str, error_func: Callable[[], None] = default_error) -> int:
+    f = True
+    ptrn = r"^-?\d+$"
+    inp = ""
+    while not fullmatch(ptrn, inp):
+        if not f: error_func()
+        inp = input(in_message).strip()
+        f = False
+    return int(inp)
+
+
+def get_float(in_message: str, error_func: Callable[[], None] = default_error) -> float:
+    f = True
+    ptrn = r"^-?\d+(\.\d+)?$"
+    inp = ""
+    while not fullmatch(ptrn, inp):
+        if not f: error_func()
+        inp = input(in_message).strip()
+        f = False
+    return float(inp)
+
+def get_email(in_message: str, error_func: Callable[[], None] = default_error) -> str:
+    f = True
+    ptrn = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    inp = ""
+    while not fullmatch(ptrn, inp):
+        if not f: error_func()
+        inp = input(in_message).strip()
+        f = False
+    return inp
+
+
+def get_text(in_message: str, error_func: Callable[[], None] = default_error, *, allow_numbers: bool = False,
+             allow_special: bool = False) -> str:
+    f = True
+    ptrn = r"^[a-zA-Z]+$"
+
+    if allow_numbers and allow_special:
+        ptrn = r"^[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]+$"
+    elif allow_numbers:
+        ptrn = r"^[a-zA-Z0-9]+$"
+    elif allow_special:
+        ptrn = r"^[a-zA-Z!@#$%^&*(),.?\":{}|<>]+$"
+
+    inp = ""
+    while not fullmatch(ptrn, inp):
+        if not f: error_func()
+        inp = input(in_message).strip()
+        f = False
+    return inp
+
+
