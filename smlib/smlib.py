@@ -19,8 +19,8 @@ def objects_from_file( filename: str, o_class, *, skip_header = True) -> list:
     """
 
     :param filename: name of the file that holds the data
-    :param o_class: Class that has a VALID CONSTRUCTOR with the EXACT amounts of parameters that the file contains. IDGAF about the param names matching, but the NUMBERS MUST
-    :param skip_header: self fucking explanatory
+    :param o_class: Class that has a VALID CONSTRUCTOR with the EXACT amounts of parameters that the file contains.
+    :param skip_header: True if the first line of the file is the names of the values
     :return:
     """
     out = []
