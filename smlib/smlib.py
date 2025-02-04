@@ -1,6 +1,6 @@
 
 
-def objects_to_file( filename: str,  objs: list, *, mode: str = "x") -> None:
+def objects_to_file( filename: str,  objs: list, *, mode: str = "x", encoding: str = "utf-8-sig") -> None:
     """
 
         :param filename: the name of the output file
@@ -8,7 +8,7 @@ def objects_to_file( filename: str,  objs: list, *, mode: str = "x") -> None:
         :param objs: MUST HAVE A __names__ FUNCTION AND A __line__ FUNCTION RETURNING STRINGS LIKE THIS: name;name2;name3 AND val1;val2;val3 OTHERWISE IT WILL BREAK!
         :return:
     """
-    with open(filename, mode, encoding="utf-8-sig") as file:
+    with open(filename, mode, encoding=encoding) as file:
         file.write(objs[0].__names__())
         file.write("\n")
         for obj in objs:
@@ -16,7 +16,7 @@ def objects_to_file( filename: str,  objs: list, *, mode: str = "x") -> None:
             if objs.index(obj) != len(objs) - 1: file.write("\n")
 
 
-def objects_from_file( filename: str, o_class, *, skip_header = True) -> list:
+def objects_from_file( filename: str, o_class, *, skip_header = True, encoding: str = "utf-8-sig") -> list:
     """
 
     :param filename: name of the file that holds the data
@@ -25,7 +25,7 @@ def objects_from_file( filename: str, o_class, *, skip_header = True) -> list:
     :return:
     """
     out = []
-    with open(filename, "r", encoding="utf-8-sig") as file:
+    with open(filename, "r", encoding=encoding) as file:
         if skip_header: next(file)
 
         for line in file:
@@ -34,6 +34,13 @@ def objects_from_file( filename: str, o_class, *, skip_header = True) -> list:
             out.append(o_class(*data_stripped))
 
     return out
+
+def list_to_file(filename:str, pList: list, *, mode: str = "x", encoding: str = "utf-8-sig", stripData: bool = True) -> None:
+    with open(filename, mode, encoding=encoding) as file:
+        data = [d.strip() for d in pList] if stripData else pList
+        file.writelines(data)
+
+
 
 from typing import Callable
 from re import fullmatch
