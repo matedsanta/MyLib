@@ -1,3 +1,4 @@
+import os
 
 
 def objects_to_file( filename: str,  objs: list, *, mode: str = "x", encoding: str = "utf-8-sig") -> None:
@@ -37,7 +38,7 @@ def objects_from_file( filename: str, o_class, *, skip_header = True, encoding: 
 
 def list_to_file(filename:str, pList: list, *, mode: str = "x", encoding: str = "utf-8-sig", stripData: bool = True) -> None:
     with open(filename, mode, encoding=encoding) as file:
-        data = [d.strip() for d in pList] if stripData else pList
+        data = [f"{str(d).strip()}\n" for d in pList] if stripData else [f"{d}\n" for d in pList]
         file.writelines(data)
 
 
@@ -99,4 +100,13 @@ def get_text(in_message: str, error_func: Callable[[], None] = default_error, *,
         f = False
     return inp
 
+from os import remove, path
+if __name__ == "__main__":
+    if path.exists("test.txt"): remove("test.txt")
+    list_to_file("test.txt", [1,2,34,4,5,2])
 
+with open("test.txt", "r", encoding="utf-8-sig") as test:
+    for l in test:print(l,end="")
+
+input("Enter to delete test output...")
+remove("test.txt")
