@@ -1,4 +1,5 @@
-import os
+class UnmatchedListLengthException(Exception):
+    pass
 
 
 def objects_to_file( filename: str,  objs: list, *, mode: str = "x", encoding: str = "utf-8-sig") -> None:
@@ -41,8 +42,19 @@ def list_to_file(filename:str, pList: list, *, mode: str = "x", encoding: str = 
         data = [f"{str(d).strip()}\n" for d in pList] if stripData else [f"{d}\n" for d in pList]
         file.writelines(data)
 
+def lists_to_file(filename:str, pList: list[list], *, mode: str = "x", encoding: str = "utf-8-sig", stripData: bool = True,  ) -> None:
+    maxlen = len(pList[0])
+    for d in pList:
+        if len(d) != maxlen: raise UnmatchedListLengthException(r"All lists should have the sameamount of data/members")
+    with open(filename,mode, encoding=encoding) as file:
+        for nList in pList:
+            for d in range(len(nList)):
+                val = str(nList[d])
+                if stripData: val = val.strip()
+                file.write(f"{nList[d]}")
+                file.write(";" if d != len(nList) - 1 else "")
 
-
+            file.write("\n")
 from typing import Callable
 from re import fullmatch
 
@@ -100,13 +112,23 @@ def get_text(in_message: str, error_func: Callable[[], None] = default_error, *,
         f = False
     return inp
 
-from os import remove, path
+
 if __name__ == "__main__":
+    from os import remove, path
     if path.exists("test.txt"): remove("test.txt")
     list_to_file("test.txt", [1,2,34,4,5,2])
 
-with open("test.txt", "r", encoding="utf-8-sig") as test:
-    for l in test:print(l,end="")
+    with open("test.txt", "r", encoding="utf-8-sig") as test:
+        for l in test:print(l,end="")
 
-input("Enter to delete test output...")
-remove("test.txt")
+    input("Enter to delete test output...")
+    remove("test.txt")
+
+    if path.exists("test.txt"): remove("test.txt")
+    lists_to_file("test.txt", [["header", "value"], ["val1", "val3"]])
+
+    with open("test.txt", "r", encoding="utf-8-sig") as test:
+        for l in test:print(l,end="")
+
+    input("Enter to delete test output...")
+    remove("test.txt")
