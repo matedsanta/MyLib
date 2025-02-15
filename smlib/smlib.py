@@ -122,7 +122,7 @@ if __name__ == "__main__":
         for l in test:print(l,end="")
 
     input("Enter to delete test output...")
-    remove("test.txt")
+    remove("test.txt") # shit type of tesing bc in a venv the file wont even show up but I'm too lazy to make actual tests
 
     if path.exists("test.txt"): remove("test.txt")
     lists_to_file("test.txt", [["header", "value"], ["val1", "val3"]])
