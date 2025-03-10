@@ -1,3 +1,30 @@
+class NonSquaredLengthException(Exception): pass
+
+def is_sqrt(num) -> bool:
+    from math import sqrt
+    sqrtt = sqrt(num)
+    return sqrtt == round(sqrtt)
+
+def string_to_matrix(string: str) -> list[list[str]]:
+    if not is_sqrt(len(string)):
+        raise NonSquaredLengthException
+    
+    from math import sqrt
+    l = int(sqrt(len(string)))
+
+    w = []
+    c = []
+    ind = 0
+    for i in range(l):
+        for j in range(l):
+            c.append(string[ind])
+            ind += 1
+        w.append(c)
+        c = []
+    return w
+
+
+
 class UnmatchedListLengthException(Exception):
     pass
 
@@ -114,7 +141,7 @@ def get_text(in_message: str, error_func: Callable[[], None] = default_error, *,
 
 
 if __name__ == "__main__":
-    from os import remove, path
+    """ from os import remove, path
     if path.exists("test.txt"): remove("test.txt")
     list_to_file("test.txt", [1,2,34,4,5,2])
 
@@ -131,4 +158,6 @@ if __name__ == "__main__":
         for l in test:print(l,end="")
 
     input("Enter to delete test output...")
-    remove("test.txt")
+    remove("test.txt") """
+
+    print(string_to_matrix("aaaaaaaaaaaaaaaa"))
