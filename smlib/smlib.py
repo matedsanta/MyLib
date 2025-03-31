@@ -1,27 +1,42 @@
-class NonSquaredLengthException(Exception): pass
 
-def is_sqrt(num) -> bool:
-    from math import sqrt
-    sqrtt = sqrt(num)
-    return sqrtt == round(sqrtt)
 
-def string_to_matrix(string: str) -> list[list[str]]:
-    if not is_sqrt(len(string)):
-        raise NonSquaredLengthException
-    
-    from math import sqrt
-    l = int(sqrt(len(string)))
+class Math:
+    def is_sqrt(num) -> bool:
+        from math import sqrt
+        sqrtt = sqrt(num)
+        return sqrtt == round(sqrtt)
 
-    w = []
-    c = []
-    ind = 0
-    for i in range(l):
-        for j in range(l):
-            c.append(string[ind])
-            ind += 1
-        w.append(c)
+class Matrix:
+    class NonSquaredLengthException(Exception): pass
+
+    def string_to_matrix(string: str) -> list[list[str]]:
+        if not Math.is_sqrt(len(string)):
+            raise Matrix.NonSquaredLengthException
+        
+        from math import sqrt
+        l = int(sqrt(len(string)))
+
+        w = []
         c = []
-    return w
+        ind = 0
+        for i in range(l):
+            for j in range(l):
+                c.append(string[ind])
+                ind += 1
+            w.append(c)
+            c = []
+        return w
+    
+
+    def rotate(matrix: list[list]):
+        """
+        implementedn't
+        """
+        if not Math.is_sqrt(len(matrix)):
+            raise Matrix.NonSquaredLengthException
+        
+
+        
 
 
 
@@ -140,6 +155,26 @@ def get_text(in_message: str, error_func: Callable[[], None] = default_error, *,
     return inp
 
 
+""" Parameterized classes, LinkedLists and other useless stuff"""
+
+from typing import Type, TypeVar
+
+T = TypeVar('T')
+
+def node(n: Type[T]) -> Type[object]:
+    class Node(object):
+        value: T
+
+        def __init__(self, value: T):
+            self.value = value
+
+    return Node
+
+
+#TODO - Folytatni
+
+
+
 if __name__ == "__main__":
     """ from os import remove, path
     if path.exists("test.txt"): remove("test.txt")
@@ -159,5 +194,3 @@ if __name__ == "__main__":
 
     input("Enter to delete test output...")
     remove("test.txt") """
-
-    print(string_to_matrix("aaaaaaaaaaaaaaaa"))
